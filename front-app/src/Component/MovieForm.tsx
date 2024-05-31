@@ -1,13 +1,32 @@
-import { css } from '@emotion/css';
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState } from 'react';
 import { useMoviesQuery } from '../services/api';
 import { CircularProgress, Typography, List, ListItem, ListItemText } from '@mui/material';
+import styled from 'styled-components';
+
+const Container = styled.div`
+  display: block;
+`;
+
+const MovieListContainer = styled.div`
+  background-color: #888;
+  border-radius: 50px;
+  width: 400px;
+  display: inline-block;
+  justify-content: center;
+  text-align: center;
+`;
+
+const MovieListWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  text-align: center;
+`;
 
 const MovieForm: React.FC = () => {
   const [movieData, setMovieData] = useState<string>('');
 
   const { data: movies, isLoading: isMoviesLoading, isError: isMoviesError } = useMoviesQuery(undefined, {
-    skip: false, 
+    skip: false,
   });
 
   const renderMovies = () => {
@@ -18,21 +37,10 @@ const MovieForm: React.FC = () => {
     }
 
     return (
-      <div className={css`display: block;`}>
-        <div className={css`
-          background-color: #888;
-          border-radius: 50px;
-          width: 400px;
-          display: inline-block;
-          justify-content: center;
-          text-align: center;
-        `}>
+      <Container>
+        <MovieListContainer>
           <Typography variant="h4" gutterBottom>Список фильмов</Typography>
-          <div className={css`
-            display: flex;
-            justify-content: center;
-            text-align: center;
-          `}>
+          <MovieListWrapper>
             <List>
               {movies.movies.map((movie: string, index: number) => (
                 <ListItem key={index}>
@@ -40,9 +48,9 @@ const MovieForm: React.FC = () => {
                 </ListItem>
               ))}
             </List>
-          </div>
-        </div>
-      </div>
+          </MovieListWrapper>
+        </MovieListContainer>
+      </Container>
     );
   };
 

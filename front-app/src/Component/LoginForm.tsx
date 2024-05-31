@@ -5,8 +5,9 @@ import * as yup from 'yup';
 import { useLoginMutation } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography, CircularProgress } from '@mui/material';
+import styled from 'styled-components';
 import '../ComponentCss/LoginForm.css';
-import { css } from '@emotion/css'
+
 
 const phoneRegex = /^\+\d{11}$/;
 const passwordStrength = /(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}/;
@@ -22,6 +23,39 @@ const schema = yup.object().shape({
     .required('Пароль обязателен.'),
 });
 
+const Container = styled.div`
+  background-color: #888;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  width: 305px;
+  border-radius: 50px;
+`;
+
+const Form = styled.form`
+  width: 100%;
+`;
+
+const FormControl = styled.div`
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+`;
+
+const ErrorText = styled(Typography)`
+  color: red;
+  text-align: center;
+  margin-top: 20px;
+`;
+
+const SuccessText = styled(Typography)`
+  color: green;
+  text-align: center;
+  margin-top: 20px;
+`;
+
 const LoginForm = () => {
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
@@ -29,7 +63,7 @@ const LoginForm = () => {
   const [login, { isLoading, isSuccess, isError, error }] = useLoginMutation();
   const navigate = useNavigate();
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data) => {
     try {
       const response = await login(data).unwrap();
       if (response.success) {
@@ -44,32 +78,17 @@ const LoginForm = () => {
 
   const renderError = () => {
     if (!error) return null;
-
     if ('status' in error) {
-
       return `Ошибка: ${JSON.stringify(error.data)}`;
     } else {
-
       return `Ошибка: ${error.message}`;
     }
   };
 
   return (
-    <div className={css`
-    background-color: #888;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 400px;
-    width: 305PX; 
-    border-radius: 50px
-    `}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={css`
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: center;
-    text-align: center  ;`}>
+    <Container>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <FormControl>
           <TextField
             className="rounded-input"
             type="text"
@@ -79,12 +98,8 @@ const LoginForm = () => {
             helperText={errors.phone ? errors.phone.message : ''}
             variant="outlined"
           />
-        </div>
-        <div className={css`
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: center;
-    text-align: center  ;`}>
+        </FormControl>
+        <FormControl>
           <TextField
             className="rounded-input"
             type="password"
@@ -94,32 +109,16 @@ const LoginForm = () => {
             helperText={errors.password ? errors.password.message : ''}
             variant="outlined"
           />
-        </div>
-        <div className={css`
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: center;
-    text-align: center  ;`}>
+        </FormControl>
+        <FormControl>
           <Button type="submit" disabled={isLoading} variant="contained">
             {isLoading ? <CircularProgress size={24} /> : 'Отправить'}
           </Button>
-        </div>
-      </form>
-      {isError && (
-        <Typography className={css`
-        color: red;
-        text-align: center;
-        margin-top: 20px;`} 
-         variant="body1">
-          {renderError()}
-        </Typography>
-      )}
-      {isSuccess && <Typography className={css`
-    color: green;
-    text-align: center;
-    margin-top: 20px;`
-    } variant="body1">Сообщение успешно отправлено!</Typography>}
-    </div>
+        </FormControl>
+      </Form>
+      {isError && <ErrorText variant="body1">{renderError()}</ErrorText>}
+      {isSuccess && <SuccessText variant="body1">Сообщение успешно отправлено!</SuccessText>}
+    </Container>
   );
 };
 
