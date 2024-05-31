@@ -1,0 +1,40 @@
+  .rounded-input{
+    width: 278px;
+
+    
+  }
+
+  .rounded-input .MuiOutlinedInput-root {
+    border-radius: 50px;
+  }
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 30px rgb(136, 136, 136) inset !important;
+  -webkit-text-fill-color: black !important;
+}
+
+
+.rounded-input .MuiOutlinedInput-root:-webkit-autofill,
+.rounded-input .MuiOutlinedInput-root:-webkit-autofill:hover, 
+.rounded-input .MuiOutlinedInput-root:-webkit-autofill:focus, 
+.rounded-input .MuiOutlinedInput-root:-webkit-autofill:active {
+  border-radius: 25px;
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  -webkit-text-fill-color: black !important;
+}
+
+
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  
+}
+
+
+  
