@@ -57,6 +57,21 @@ const styles = {
     textAlign: 'center',
     marginTop: '20px',
   }),
+  roundedInput: css({
+    width: '278px',
+    '& .MuiOutlinedInput-root': {
+      borderRadius: '50px',
+    },
+    '& input:-webkit-autofill': {
+      WebkitBoxShadow: '0 0 0 30px rgb(136, 136, 136) inset !important',
+      WebkitTextFillColor: 'black !important',
+    },
+    '& .MuiOutlinedInput-root:-webkit-autofill, .MuiOutlinedInput-root:-webkit-autofill:hover, .MuiOutlinedInput-root:-webkit-autofill:focus, .MuiOutlinedInput-root:-webkit-autofill:active': {
+      borderRadius: '25px',
+      WebkitBoxShadow: '0 0 0 30px white inset !important',
+      WebkitTextFillColor: 'black !important',
+    },
+  }),
 };
 
 const LoginForm: React.FC = () => {

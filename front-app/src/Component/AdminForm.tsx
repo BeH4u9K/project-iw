@@ -1,4 +1,3 @@
-
 /** @jsxImportSource @emotion/react */
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -20,7 +19,7 @@ const AdminForm: React.FC = () => {
     container: css({
       backgroundColor: '#888',
       display: 'flex',
-      flexDirection: 'column', 
+      flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
       height: '400px',
@@ -37,7 +36,22 @@ const AdminForm: React.FC = () => {
       textAlign: 'center',
     }),
     firstInput: css({
-      marginBottom: '20px', 
+      marginBottom: '20px',
+    }),
+    roundedInput: css({
+      width: '278px',
+      '& .MuiOutlinedInput-root': {
+        borderRadius: '50px',
+      },
+      '& input:-webkit-autofill': {
+        WebkitBoxShadow: '0 0 0 30px rgb(136, 136, 136) inset !important',
+        WebkitTextFillColor: 'black !important',
+      },
+      '& .MuiOutlinedInput-root:-webkit-autofill, .MuiOutlinedInput-root:-webkit-autofill:hover, .MuiOutlinedInput-root:-webkit-autofill:focus, .MuiOutlinedInput-root:-webkit-autofill:active': {
+        borderRadius: '25px',
+        WebkitBoxShadow: '0 0 0 30px white inset !important',
+        WebkitTextFillColor: 'black !important',
+      },
     }),
   };
 
@@ -65,7 +79,7 @@ const AdminForm: React.FC = () => {
   return (
     <div css={styles.container}>
       <form css={styles.form} onSubmit={handleSubmitAdd(onSubmitAdd)}>
-        <div css={styles.formControl}>
+        <div css={[styles.formControl, styles.roundedInput]}>
           <TextField
             className="rounded-input"
             type="text"
@@ -83,7 +97,7 @@ const AdminForm: React.FC = () => {
         </div>
       </form>
       <form css={styles.form} onSubmit={handleSubmitDelete(onSubmitDelete)}>
-        <div css={styles.formControl}>
+        <div css={[styles.formControl, styles.roundedInput]}>
           <TextField
             className="rounded-input"
             type="text"
