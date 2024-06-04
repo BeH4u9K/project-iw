@@ -40,6 +40,7 @@ const AdminForm: React.FC = () => {
     }),
     roundedInput: css({
       width: '278px',
+      marginLeft:'13px',
       '& .MuiOutlinedInput-root': {
         borderRadius: '50px',
       },
