@@ -1,13 +1,18 @@
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useLoginMutation } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography, CircularProgress } from '@mui/material';
-import styled from 'styled-components';
 import '../ComponentCss/LoginForm.css';
 
+interface IFormInput {
+  phone: string;
+  password: string;
+}
 
 const phoneRegex = /^\+\d{11}$/;
 const passwordStrength = /(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}/;
@@ -23,51 +28,53 @@ const schema = yup.object().shape({
     .required('Пароль обязателен.'),
 });
 
-const Container = styled.div`
-  background-color: #888;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 400px;
-  width: 305px;
-  border-radius: 50px;
-`;
+const styles = {
+  container: css({
+    backgroundColor: '#888',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '400px',
+    width: '305px',
+    borderRadius: '50px',
+  }),
+  form: css({
+    width: '100%',
+  }),
+  formControl: css({
+    marginBottom: '20px',
+    display: 'flex',
+    justifyContent: 'center',
+    textAlign: 'center',
+  }),
+  errorText: css({
+    color: 'red',
+    textAlign: 'center',
+    marginTop: '20px',
+  }),
+  successText: css({
+    color: 'green',
+    textAlign: 'center',
+    marginTop: '20px',
+  }),
+};
 
-const Form = styled.form`
-  width: 100%;
-`;
-
-const FormControl = styled.div`
-  margin-bottom: 20px;
-  display: flex;
-  justify-content: center;
-  text-align: center;
-`;
-
-const ErrorText = styled(Typography)`
-  color: red;
-  text-align: center;
-  margin-top: 20px;
-`;
-
-const SuccessText = styled(Typography)`
-  color: green;
-  text-align: center;
-  margin-top: 20px;
-`;
-
-const LoginForm = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm({
+const LoginForm: React.FC = () => {
+  const { register, handleSubmit, formState: { errors } } = useForm<IFormInput>({
     resolver: yupResolver(schema),
   });
   const [login, { isLoading, isSuccess, isError, error }] = useLoginMutation();
   const navigate = useNavigate();
 
-  const onSubmit = async (data) => {
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     try {
       const response = await login(data).unwrap();
       if (response.success) {
-        navigate('/movie');
+        if (response.admin) {
+          navigate('/admin');
+        } else {
+          navigate('/movie');
+        }
       } else {
         alert('Неверные данные');
       }
@@ -86,9 +93,9 @@ const LoginForm = () => {
   };
 
   return (
-    <Container>
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl>
+    <div css={styles.container}>
+      <form css={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <div css={styles.formControl}>
           <TextField
             className="rounded-input"
             type="text"
@@ -98,8 +105,8 @@ const LoginForm = () => {
             helperText={errors.phone ? errors.phone.message : ''}
             variant="outlined"
           />
-        </FormControl>
-        <FormControl>
+        </div>
+        <div css={styles.formControl}>
           <TextField
             className="rounded-input"
             type="password"
@@ -109,16 +116,16 @@ const LoginForm = () => {
             helperText={errors.password ? errors.password.message : ''}
             variant="outlined"
           />
-        </FormControl>
-        <FormControl>
+        </div>
+        <div css={styles.formControl}>
           <Button type="submit" disabled={isLoading} variant="contained">
             {isLoading ? <CircularProgress size={24} /> : 'Отправить'}
           </Button>
-        </FormControl>
-      </Form>
-      {isError && <ErrorText variant="body1">{renderError()}</ErrorText>}
-      {isSuccess && <SuccessText variant="body1">Сообщение успешно отправлено!</SuccessText>}
-    </Container>
+        </div>
+      </form>
+      {isError && <Typography css={styles.errorText} variant="body1">{renderError()}</Typography>}
+      {isSuccess && <Typography css={styles.successText} variant="body1">Сообщение успешно отправлено!</Typography>}
+    </div>
   );
 };
 

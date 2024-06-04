@@ -4,24 +4,31 @@ export const loginApi = createApi({
   reducerPath: 'loginApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:5000' }),
   endpoints: (builder) => ({
-    recordMovies: builder.mutation({
-      query: (recordMovies) => ({
-        url: 'api/movies',
-        method: 'POST',
-        body: recordMovies,
-      }),
-    }),
     login: builder.mutation({
       query: (credentials) => ({
         url: 'api/login',
         method: 'POST',
         body: credentials,
-      }), 
+      }),
     }),
-    movies: builder.query({
-      query: () => 'api/movies', 
+    addMovie: builder.mutation({
+      query: (movieData) => ({
+        url: 'api/admin/add',
+        method: 'POST',
+        body: movieData,
+      }),
+    }),
+    deleteMovie: builder.mutation({
+      query: (movieData) => ({
+        url: 'api/admin/delete',
+        method: 'POST',
+        body: movieData,
+      }),
+    }),
+    getMovies: builder.query({
+      query: () => 'api/movies',
     }),
   }),
 });
 
-export const { useLoginMutation, useMoviesQuery, useRecordMoviesMutation } = loginApi;
+export const { useLoginMutation, useAddMovieMutation, useDeleteMovieMutation, useGetMoviesQuery } = loginApi;

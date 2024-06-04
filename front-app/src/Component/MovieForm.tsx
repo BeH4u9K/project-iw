@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useMoviesQuery } from '../services/api';
+import { useGetMoviesQuery } from '../services/api';
 import { CircularProgress, Typography, List, ListItem, ListItemText } from '@mui/material';
 import styled from 'styled-components';
 
@@ -25,7 +25,7 @@ const MovieListWrapper = styled.div`
 const MovieForm: React.FC = () => {
   const [movieData, setMovieData] = useState<string>('');
 
-  const { data: movies, isLoading: isMoviesLoading, isError: isMoviesError } = useMoviesQuery(undefined, {
+  const { data: movies, isLoading: isMoviesLoading, isError: isMoviesError } = useGetMoviesQuery(undefined, {
     skip: false,
   });
 
